@@ -10,7 +10,7 @@
       </section>
 
       <!-- Segunda Seção -->
-      
+
       <section class="section">
         <div class="container-title">
           <h1 class="txt-login">Faça o Login</h1>
@@ -28,7 +28,7 @@
               Entrar
             </v-btn>
             <div class="container-link">
-              <router-link title="Clique aqui!" to="TelaCadastro">Deseja Criar Conta?</router-link>
+              <router-link title="Clique aqui!" to="TelaCadastro">Deseja Criar uma Conta?</router-link>
             </div>
           </v-form>
 
@@ -104,25 +104,28 @@ export default {
 
 .container-form {
   margin-bottom: 25px;
-  margin-right: 7rem;
+  margin: 0 auto;
+  margin-right: 2rem;
 }
 
 .container-img {
-  margin-top: 1.5rem;
-  margin-left: 7rem;
-}
-.txt-login{
-  margin-left: -8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.container-link{
+
+.container-link {
+
   /* superior | direita | inferior | esquerda */
-  padding: 30px 0em 0 47em;
+  padding: 25px 0 0 0;
+  text-align: end;
   font-size: x-small;
   font-weight: bold;
   color: #0000FF;
 
 }
+
 @media (max-width: 599px) {
   .container-img {
     display: none;
@@ -134,16 +137,21 @@ export default {
     margin-left: -160px;
     margin-top: -35px;
   }
-
-  .text-login{
-    margin-top: -10px;
+  .container-title {
+    margin: 0 auto;
   }
-
-  .container-link{
-    padding: 30px 0em 10px 0em;
-  font-size: x-small;
-  font-weight: bold;
-  color: #0000FF;
+  h1{
+    margin-left: -150px;
+    margin-bottom: 5rem;
+  }
+  .container-link {
+    /* superior | direita | inferior | esquerda */
+    padding: 1rem 0 0 0;
+    text-align: start;
+    font-size: x-small;
+    font-weight: bold;
+    color: #0000FF;
+    margin-bottom: 5rem;
   }
 }
 </style>
