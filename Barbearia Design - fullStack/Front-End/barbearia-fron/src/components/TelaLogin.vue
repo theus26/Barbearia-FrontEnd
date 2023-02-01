@@ -2,6 +2,7 @@
   <main>
     <div class="container-general">
       <!-- Primeira Seção -->
+
       <section class="section">
         <div class="container-img">
           <v-img src="../assets/images.jpg" alt="Logo Section" width="450" height="390"> </v-img>
@@ -9,6 +10,7 @@
       </section>
 
       <!-- Segunda Seção -->
+      
       <section class="section">
         <div class="container-title">
           <h1 class="txt-login">Faça o Login</h1>
@@ -108,5 +110,22 @@ export default {
 }
 .txt-login{
   margin-left: -8rem;
+}
+
+@media (max-width: 599px) {
+  .container-img {
+    display: none;
+  }
+
+  .container-form {
+    width: 20rem;
+    height: 100%;
+    margin-left: -160px;
+    margin-top: -35px;
+  }
+
+  .text-login{
+    margin-top: -10px;
+  }
 }
 </style>
