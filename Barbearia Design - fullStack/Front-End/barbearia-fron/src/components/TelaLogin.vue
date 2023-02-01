@@ -27,6 +27,9 @@
               variant="elevated">
               Entrar
             </v-btn>
+            <div class="container-link">
+              <router-link title="Clique aqui!" to="TelaCadastro">Deseja Criar Conta?</router-link>
+            </div>
           </v-form>
 
         </div>
@@ -112,6 +115,14 @@ export default {
   margin-left: -8rem;
 }
 
+.container-link{
+  /* superior | direita | inferior | esquerda */
+  padding: 30px 0em 0 47em;
+  font-size: x-small;
+  font-weight: bold;
+  color: #0000FF;
+
+}
 @media (max-width: 599px) {
   .container-img {
     display: none;
@@ -126,6 +137,13 @@ export default {
 
   .text-login{
     margin-top: -10px;
+  }
+
+  .container-link{
+    padding: 30px 0em 10px 0em;
+  font-size: x-small;
+  font-weight: bold;
+  color: #0000FF;
   }
 }
 </style>
