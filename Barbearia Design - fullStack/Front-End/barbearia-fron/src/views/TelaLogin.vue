@@ -62,14 +62,13 @@ export default {
     onSubmit() {
       if (!this.form) return
       this.loading = true
-      setTimeout(() => (this.loading = false), 2000)
       const obj = {
         email: this.email,
         senha: this.password
       }
       console.log(obj)
-      this.loading = false
-      setTimeout(() => (this.$router.push('/TelaPrincipal')), 1500)
+      
+      setTimeout(() => (this.loading = false ,this.$router.push('/TelaPrincipal')), 1500)
     },
     required(v) {
       return !!v || 'Campos não pode ser vazio, Preencha os campos.'

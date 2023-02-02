@@ -104,9 +104,7 @@ export default{
     font-weight: bold;
     padding-bottom: 2.5rem;
 }
-hr{
-    backgroud-color: black;
-}
+
 .container-geral{
     border: 1px solid #00B49C;
     border-radius: 15px;

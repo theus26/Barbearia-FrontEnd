@@ -136,10 +136,18 @@ export default {
     align-items: center;
     gap: 1rem;
     padding: 0.5rem;
+    cursor: pointer;
 }
 .txt{
     font-size: medium;
     font-weight: bold;
+}
+
+@media (max-width: 599px) {
+  .container-geral {
+   display: none;
+  }
+ 
 }
 </style>
 
