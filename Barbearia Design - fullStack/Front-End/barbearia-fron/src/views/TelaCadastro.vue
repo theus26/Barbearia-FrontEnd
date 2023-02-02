@@ -10,7 +10,7 @@
           <v-container>
             <v-row>
               <v-col cols="12" md="15">
-                <v-text-field v-model="firstname" maxlength="30" :rules=[required,Nome] :counter="10" label="Informe seu Nome"
+                <v-text-field v-model="firstname" maxlength="30" :rules=[required,Nome,MinName] :counter="10" label="Informe seu Nome"
                   ></v-text-field>
               </v-col>
             </v-row>
@@ -79,8 +79,16 @@ export default {
 
     onSubmit() {
       if (!this.form) return
-      this.loading = true
-      setTimeout(() =>  this.$router.push("/"), 2000)
+      setTimeout(() =>{
+        this.loading = true
+      },2000)
+      setTimeout(() =>{
+        this.loading = false
+        this.$swal("Sucesso", "Usuario cadastrado com sucesso!", "success");  
+      },4000)
+      setTimeout(() => {
+        this.$router.push('/')
+      }, 6000);
       const obj = {
         email: this.email,
         senha: this.password
@@ -107,6 +115,10 @@ export default {
     Min(v){
       if (v.length >= 8 ) return true
       return "Min 8 caracteres"
+    },
+    MinName(v){
+      if (v.length >= 3 ) return true
+      return "Nome deve ter mais que 3 caracteres"
     },
     CpfRules(v){
        if(validate(v)) return true
