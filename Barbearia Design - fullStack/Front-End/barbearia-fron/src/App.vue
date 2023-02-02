@@ -12,17 +12,22 @@
 import { defineComponent } from "vue";
 
 // Components
-
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 
 export default defineComponent({
   name: "App",
-
+  data(){
+    return{
+      show:false
+          
+    }
+  },
   components: {
     Header,
-    Footer
+    Footer,
   },
+
 });
 
 </script>
@@ -35,3 +40,5 @@ export default defineComponent({
 }
 
 </style>
+
+
