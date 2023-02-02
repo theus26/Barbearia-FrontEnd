@@ -7,3 +7,16 @@
 </template>
 
 
+
+<style>
+@media (max-width: 599px) {
+  .image {
+    width: 10px;
+    height: 10px;
+    margin-bottom: 25px;
+  }
+ 
+}
+
+</style>
+

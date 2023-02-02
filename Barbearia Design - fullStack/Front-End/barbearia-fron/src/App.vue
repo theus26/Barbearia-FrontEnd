@@ -1,21 +1,31 @@
 <template>
   <v-app>
     <v-main>
+      <Header />
       <router-view />
+      <Footer />
     </v-main>
   </v-app>
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+
+// Components
+
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
+
+export default defineComponent({
   name: "App",
 
-  data: () => ({
-    //
-  }),
-};
-</script>
+  components: {
+    Header,
+    Footer
+  },
+});
 
+</script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 *{

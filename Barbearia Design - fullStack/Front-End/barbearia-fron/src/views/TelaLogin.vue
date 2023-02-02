@@ -20,7 +20,7 @@
           <v-form v-model="form" @submit.prevent="onSubmit">
             <v-text-field v-model="email" :readonly="loading" :rules="[required, Email]" outilined class="mb-2"
               label="Digite seu Email:" placeholder="example@gmail.com"></v-text-field>
-            <v-text-field v-model="password" :readonly="loading" :rules="[required, rules.min, rules.letraNum]"
+            <v-text-field :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'" :type="show4 ? 'text' : 'password'" @click:append="show4 = !show4" v-model="password" :readonly="loading" :rules="[required, rules.min, rules.letraNum]"
               label="Senha" placeholder="Insira sua senha."></v-text-field>
             <br>
             <v-btn :disabled="!form" :loading="loading" block color="success" size="large" type="submit"
@@ -44,6 +44,7 @@
 <script>
 export default {
   data: () => ({
+    show4: false,
     form: false,
     email: null,
     password: null,
@@ -137,13 +138,16 @@ export default {
     margin-left: -160px;
     margin-top: -35px;
   }
+
   .container-title {
     margin: 0 auto;
   }
-  h1{
+
+  h1 {
     margin-left: -150px;
     margin-bottom: 5rem;
   }
+
   .container-link {
     /* superior | direita | inferior | esquerda */
     padding: 1rem 0 0 0;
@@ -153,5 +157,7 @@ export default {
     color: #0000FF;
     margin-bottom: 5rem;
   }
+
+ 
 }
 </style>
