@@ -68,6 +68,8 @@ export default {
         senha: this.password
       }
       console.log(obj)
+      this.loading = false
+      setTimeout(() => (this.$router.push('/TelaPrincipal')), 1500)
     },
     required(v) {
       return !!v || 'Campos não pode ser vazio, Preencha os campos.'

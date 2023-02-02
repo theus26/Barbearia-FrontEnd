@@ -4,7 +4,7 @@
             <div title="Clique aqui!" class="container-geral">
                 <div class="container-menu" @click="appear">
                     <div class="container-svg">
-                        <v-img class="image" src="../assets/img1.svg" alt="Calendar" width="30" heigth="30"></v-img>
+                        <v-img class="image" src="../assets/img4.svg" alt="Calendar" width="30" heigth="30"></v-img>
                     </div>
                     <div class="container-title">
                         <span class="txt">
