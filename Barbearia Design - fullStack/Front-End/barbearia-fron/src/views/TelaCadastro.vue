@@ -17,7 +17,7 @@
 
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model="phone" v-mask="['(##) ####-####', '(##) #####-####']" :readonly="loading" :rules="[required]" label="Informe seu telefone" 
+                <v-text-field v-model="phone" v-mask="['(##) ####-####', '(##) #####-####']" :readonly="loading" :rules="[required,PhoneRules]" label="Informe seu telefone" 
                   placeholder="Ex: 7998869-2589" ></v-text-field>
               </v-col>
 
@@ -55,6 +55,7 @@
 
 <script>
 import { validate } from "gerador-validador-cpf";
+import validator from 'validator';
 import ContainerBox from '../components/ContainerBox.vue'
 
 export default {
@@ -111,6 +112,10 @@ export default {
        if(validate(v)) return true
       return "CPF Invalido";
     },
+    PhoneRules(v){
+      if(validator.isMobilePhone(v)) return true
+        return "Número de telefone inválido."
+    }
   },
 }
 

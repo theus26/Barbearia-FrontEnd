@@ -16,6 +16,7 @@
     "postcss": "^8",
     "roboto-fontface": "*",
     "v-mask": "^2.3.0",
+    "validator": "^13.7.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vue-the-mask": "^0.11.1",
