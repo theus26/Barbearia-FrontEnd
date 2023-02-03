@@ -99,6 +99,7 @@ export default{
 </script>
 
 <style scoped>
+
 .containe-title{
     font-size: xx-large;
     font-weight: bold;

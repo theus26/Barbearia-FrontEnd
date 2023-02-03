@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import TelaCadastro from "../views/TelaCadastro.vue"
 
 const routes = [
   {
@@ -10,9 +11,7 @@ const routes = [
   {
     path: "/TelaCadastro",
     name: "Tela de Cadastro",
-
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/TelaCadastro.vue"),
+    component:TelaCadastro
   },
   {
     path: "/TelaPrincipal",
@@ -31,7 +30,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/TelaAllAgendamentos.vue"),
+      import(/* webpackChunkName: "about" */ "../views/Agendamentos/TelaAllAgendamentos.vue"),
   },
 
   {
@@ -41,7 +40,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/TelaMeusAgendamentos.vue"),
+      import(/* webpackChunkName: "about" */ "../views/Agendamentos/TelaMeusAgendamentos.vue"),
   },
 
   {
@@ -51,7 +50,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/TelaRealizarAgendamentos.vue"),
+      import(/* webpackChunkName: "about" */ "../views/Agendamentos/TelaRealizarAgendamentos.vue"),
   },
 ];
 

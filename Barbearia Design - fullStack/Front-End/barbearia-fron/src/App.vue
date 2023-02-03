@@ -39,6 +39,12 @@ export default defineComponent({
   font-family: 'Roboto', sans-serif;
 }
 
+@media (max-width: 599px) {
+  .container-geral {
+   display: none;
+  }
+ 
+}
 </style>
 
 

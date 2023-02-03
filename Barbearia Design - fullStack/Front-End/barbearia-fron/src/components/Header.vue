@@ -9,14 +9,3 @@
 </template>
 
 
-
-<style>
-@media (max-width: 599px) {
-  .image {
-   
-  }
- 
-}
-
-</style>
-
