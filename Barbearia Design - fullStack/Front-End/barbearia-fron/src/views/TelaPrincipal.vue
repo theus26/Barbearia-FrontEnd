@@ -91,7 +91,14 @@ export default{
         perform(){
             setTimeout(() => (this.$router.push('/TelaRealizarAgendamentos')), 500)
         },
+        getNameUser(){
+            this.user = localStorage.getItem("Name")
+        }
+    },
+    mounted(){
+        this.getNameUser();
     }
+    
     
 }
 

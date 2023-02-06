@@ -36,6 +36,7 @@
   
   
 <script>
+import { Logout } from '@/Services/Api';
 export default {
     name: "ButtonLogout",
     data() {
@@ -62,9 +63,17 @@ export default {
         perform(){
             setTimeout(() => (this.$router.push('/TelaRealizarAgendamentos')), 500)
         },
-        Logout() {
-            localStorage.clear()
-            setTimeout(() => (this.$router.push('/')), 1500)
+        async Logout() {
+            const IdUser = localStorage.getItem("IdUser")
+            const Token = localStorage.getItem("Token")
+            const result = await Logout (IdUser, Token)
+            if (result === 200){
+                localStorage.clear()
+                setTimeout(() => (this.$router.push('/')), 1500)
+            }
+            else{
+                this.$swal("Error", "Error ao sair", "error")
+            }
         }
     },
 };

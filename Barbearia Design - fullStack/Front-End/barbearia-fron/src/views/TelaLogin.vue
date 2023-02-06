@@ -18,9 +18,9 @@
         <div class="container-form">
 
           <v-form v-model="form" @submit.prevent="onSubmit">
-            <v-text-field v-model="email" :readonly="loading" :rules="[required, Email]" outilined class="mb-2"
+            <v-text-field v-model="Email" :readonly="loading" :rules="[required, Emails]" outilined class="mb-2"
               label="Digite seu Email:" placeholder="example@gmail.com"></v-text-field>
-            <v-text-field :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'" :type="show4 ? 'text' : 'password'" @click:append="show4 = !show4" v-model="password" :readonly="loading" :rules="[required, rules.min, rules.letraNum]"
+            <v-text-field :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'" :type="show4 ? 'text' : 'password'" @click:append="show4 = !show4" v-model="Password" :readonly="loading" :rules="[required, rules.min, rules.letraNum]"
               label="Senha" placeholder="Insira sua senha."></v-text-field>
             <br>
             <v-btn :disabled="!form" :loading="loading" block color="success" size="large" type="submit"
@@ -40,14 +40,16 @@
     </div>
   </main>
 </template>
-
 <script>
+
+import {Login} from "../Services/Api"
+
 export default {
   data: () => ({
     show4: false,
     form: false,
-    email: null,
-    password: null,
+    Email: null,
+    Password: null,
     loading: false,
     rules: {
       required: (value) => !!value || "Preencha o campo ",
@@ -59,22 +61,31 @@ export default {
   }),
 
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (!this.form) return
       this.loading = true
-      const obj = {
-        email: this.email,
-        senha: this.password
+      const result = await Login(this.Email, this.Password)
+      if (result.status === 200){
+          console.log(result.data)
+          const token = result.data.token
+          const IdUser = result.data.idUser
+          const Name = result.data.userName
+          localStorage.setItem("Token", token), localStorage.setItem("IdUser", IdUser), localStorage.setItem("Name", Name)
+          setTimeout(() => (this.loading = false ,this.$router.push('/TelaPrincipal')), 1500)
       }
-      console.log(obj)
+      else {     
+         if (result.code === 400) {
+           this.$swal("Error", "Email OU Senha Incorretos", "error");        
+           this.loading = false
+         }
+       }
       
-      setTimeout(() => (this.loading = false ,this.$router.push('/TelaPrincipal')), 1500)
     },
     required(v) {
       return !!v || 'Campos não pode ser vazio, Preencha os campos.'
     },
-    Email(v) {
-      if (/^[_a-z0-9-]+@[a-z.-]+\.[a-z]+$/i.test(v)) return true
+    Emails(v) {
+      if (/^[_a-z0-9-.]+@[a-z.-]+\.[a-z]+$/i.test(v)) return true
       return 'Deve ser um e-mail valido.'
     },
   },

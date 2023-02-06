@@ -10,31 +10,31 @@
           <v-container>
             <v-row>
               <v-col cols="12" md="15">
-                <v-text-field v-model="firstname" maxlength="30" :rules=[required,Nome,MinName] :counter="10" label="Informe seu Nome"
+                <v-text-field v-model="Name" maxlength="30" :rules=[required,Nome,MinName] :counter="10" label="Informe seu Nome"
                   ></v-text-field>
               </v-col>
             </v-row>
 
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model="phone" v-mask="['(##) ####-####', '(##) #####-####']" :readonly="loading" :rules="[required,PhoneRules]" label="Informe seu telefone" 
+                <v-text-field v-model="Phone" v-mask="['(##) ####-####', '(##) #####-####']" :readonly="loading" :rules="[required,PhoneRules]" label="Informe seu telefone" 
                   placeholder="Ex: 7998869-2589" ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model="cpf" v-mask="'###.###.###-##'" :readonly="loading" :rules="[required,CpfRules]" label="Informe seu CPF" 
+                <v-text-field v-model="CPF" v-mask="'###.###.###-##'" :readonly="loading" :rules="[required,CpfRules]" label="Informe seu CPF" 
                   placeholder="Ex: 000.000.000-00"></v-text-field>
               </v-col>
             </v-row>
 
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model="email" :readonly="loading" :rules="[required, Email]" label="Informe seu E-mail" 
+                <v-text-field v-model="Email" :readonly="loading" :rules="[required, Emails]" label="Informe seu E-mail" 
                   placeholder="Ex: joao@gmail.com"></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field  :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'" :type="show4 ? 'text' : 'password'" @click:append="show4 = !show4" v-model="password" :readonly="loading" :rules="[required,Min,letraNum]" :counter="8" label="Informe a sua Senha"
+                <v-text-field  :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'" :type="show4 ? 'text' : 'password'" @click:append="show4 = !show4" v-model="Password" :readonly="loading" :rules="[required,Min,letraNum]" :counter="8" label="Informe a sua Senha"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { RegisterUser } from "@/Services/Api";
 import { validate } from "gerador-validador-cpf";
 import validator from 'validator';
 import ContainerBox from '../components/ContainerBox.vue'
@@ -67,41 +68,44 @@ export default {
     show4: false,
     form: false,
     valid: false,
-    firstname:null,
-    email: '',
-    password: '',
-    cpf: '',
-    phone: '',
+    Name:null,
+    Email: '',
+    Password: '',
+    CPF: '',
+    Phone: '',
     loading:null,
   }),
 
   methods: {
 
-    onSubmit() {
+    async onSubmit() {
       if (!this.form) return
       setTimeout(() =>{
         this.loading = true
       },2000)
-      setTimeout(() =>{
-        this.loading = false
-        this.$swal("Sucesso", "Usuario cadastrado com sucesso!", "success");  
-      },4000)
-      setTimeout(() => {
-        this.$router.push('/')
-      }, 6000);
-      const obj = {
-        email: this.email,
-        senha: this.password
+
+      const result = await RegisterUser (this.Name, this.Email, this.Password, this.CPF, this.Phone)
+      if (result === 200){
+        this.$swal("Sucesso", "Usuário cadastrado com sucesso!", "success");
+        this.$router.push("/")
       }
-      console.log(obj)
+      else {     
+         if (result.code === 400) {
+           this.$swal("Error", "Não foi possivél cadastrar usuario, Tente novamente!", "error");        
+           this.loading = false
+         }
+       }
+      
+        
+     
       
     },
 
     required(v) {
       return !!v || "Preencha o campo "
     },
-    Email(v) {
-      if (/^[_a-z0-9-]+@[a-z.-]+\.[a-z]+$/i.test(v)) return true
+    Emails(v) {
+      if (/^[_a-z0-9-.]+@[a-z.-]+\.[a-z]+$/i.test(v)) return true
       return 'Deve ser um e-mail valido.'
     },
     Nome(v){

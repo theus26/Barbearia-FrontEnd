@@ -277,10 +277,12 @@ export default {
         required(v) {
             return !!v || "Preencha o campo "
         },
+    },
+    mounted(){
+        console.log(this.desserts)
     }
+
 }
-
-
 </script>
 
 <style scoped>
