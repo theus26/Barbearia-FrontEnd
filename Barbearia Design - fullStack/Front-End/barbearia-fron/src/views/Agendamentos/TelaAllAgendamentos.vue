@@ -5,62 +5,72 @@
         </div>
         <br>
 
-        <div class="containe-title">
-            Todos Agendamentos
-            <hr>
-        </div>
+        <div class="container">
 
-        <div class="container-table">
-            <v-table>
-                <thead>
-                    <tr>
-                        <th class="text-left">
-                           <p class="txt">Cliente</p> 
-                        </th>
-                        <th class="text-left">
-                            Data do Agendamento
-                        </th>
-                        <th class="text-left fon">
-                            Serviço Desejado
-                        </th>
-                        <th class="text-left">
-                            Horário
-                        </th>
-                        <th class="text-left">
-                            Barbeiro
-                        </th>
+            <div class="container-header">
+                <div class="img">
+                    <v-img src="../../assets/img1.svg" width="60" heigth="60"></v-img>
+                </div>
 
-                        <th class="text-left">
-                            Ações do Agendamento
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in desserts" :key="item.Indice">
-
-                        <td>{{ item.Cliente }}</td>
-                        <td>{{ item.DatadoAgendamento }}</td>
-                        <td>{{ item.ServiçoDesejado }}</td>
-                        <td>{{ item.Horario }}</td>
-                        <td>{{ item.Barbeiro }}</td>
-                        <td>
-                            <div class="container-btn">
-                                <button title="Concluir Agendamento" class="btn" color="sucess"
-                                    @click="Concluir(item.Indice)">
-                                    <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
-                                </button>
-                                <button title="Cancelar Agendamento" class="btn2" color="sucess"
-                                    @click="Cancelar(item.Indice)">
-                                    <v-icon end icon="mdi-cancel"></v-icon>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </v-table>
-            <div class="container-paginatior">
-                <div class="pagination">
-                    <v-pagination v-model="page" :length="6"></v-pagination>
+                <div class="containe-title">
+                    Todos Agendamentos
+                    <hr>
+                </div>
+            </div>
+            <br>
+        
+            <div class="container-table">
+                <v-table>
+                    <thead>
+                        <tr>
+                            <th class="text-left">
+                               <p class="txt">Cliente</p> 
+                            </th>
+                            <th class="text-left">
+                                Data do Agendamento
+                            </th>
+                            <th class="text-left fon">
+                                Serviço Desejado
+                            </th>
+                            <th class="text-left">
+                                Horário
+                            </th>
+                            <th class="text-left">
+                                Barbeiro
+                            </th>
+    
+                            <th class="text-left">
+                                Ações do Agendamento
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in desserts" :key="item.Indice">
+    
+                            <td>{{ item.Cliente }}</td>
+                            <td>{{ item.DatadoAgendamento }}</td>
+                            <td>{{ item.ServiçoDesejado }}</td>
+                            <td>{{ item.Horario }}</td>
+                            <td>{{ item.Barbeiro }}</td>
+                            <td>
+                                <div class="container-btn">
+                                    <button title="Concluir Agendamento" class="btn" color="sucess"
+                                        @click="Concluir(item.Indice)">
+                                        <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
+                                    </button>
+                                    <button title="Cancelar Agendamento" class="btn2" color="sucess"
+                                        @click="Cancelar(item.Indice)">
+                                        <v-icon end icon="mdi-cancel"></v-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </v-table>
+                <div class="container-paginatior">
+                    <div class="pagination">
+                        <v-pagination v-model="page" :length="6"></v-pagination>
+                    </div>
                 </div>
             </div>
         </div>
@@ -185,10 +195,19 @@ export default {
 .containe-title {
     font-size: xx-large;
     font-weight: bold;
-    padding: 1rem;
-    text-align: center;
+    padding: 0.5rem;
+}
+.container-header{
+    display: flex;
+    gap: 1rem;
 }
 
+.container{
+    border: 1px solid #f5f4f4;
+    background-color: #f5f4f4;
+    padding: 2rem 5rem 5rem;
+    
+}
 .v-table {
     padding: 1.5rem;
 }

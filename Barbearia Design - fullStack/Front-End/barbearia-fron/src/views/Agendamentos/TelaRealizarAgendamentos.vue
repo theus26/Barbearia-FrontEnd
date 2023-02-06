@@ -17,28 +17,25 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="6">
-                                <v-text-field type="date" v-model="date"
+                                <v-text-field type="date" :rules="[required]" v-model="date"
                                     label="Informe a data para o Agendamento:"></v-text-field>
                             </v-col>
 
                             <v-col cols="12" md="6">
-                                <v-select v-model="select" :items="items"
-                                    label="Item" required
-                                  ></v-select>
+                                <v-select v-model="horarioSelect" :rules="[select]" :items="itemsHorario"
+                                    label="Escolha o Horário:"></v-select>
                             </v-col>
 
                             <v-col cols="12" md="6">
-                                <v-select v-model="select" :items="items"
-                                    label="Item" required
-                                  ></v-select>
+                                <v-select v-model="servicoSelect" :rules="[select]" :items="itemsServiço"
+                                    label="Serviço Desejado:"></v-select>
                             </v-col>
 
 
 
                             <v-col cols="12" md="6">
-                                <v-select v-model="select" :items="items"
-                                    label="Item" required
-                                  ></v-select>
+                                <v-select v-model="barbeiroSelect" :rules="[select]" :items="itemsBarbeiro"
+                                    label="Barbeiro Desejado:"></v-select>
                             </v-col>
 
 
@@ -70,14 +67,74 @@ export default {
 
     data() {
         return {
-            select:null,
-         items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
-      ]
+            form: false,
+            date: '',
+            horarioSelect: null,
+            servicoSelect: null,
+            barbeiroSelect: null,
+            loading: null,
+            itemsHorario: [
+                '08:00',
+                '09:00',
+                '10:00',
+                '11:00',
+                '12:00',
+                '14:00',
+                '15:00',
+                '16:00',
+                '17:00',
+                '18:00',
+                '19:00'
+            ],
+            itemsServiço: [
+                'Corte de Cabelo',
+                'Sombrancelha',
+                'Barba',
+                'Corte de Cabelo e Sombrancelha',
+                'Corte de Cabelo e Barba',
+                'Corte de Cabelo, Sombrancelha e Barba',
+                'Sombrancelha e Barba'
+            ],
+            itemsBarbeiro: [
+                'Fagner ',
+                'Pedro',
+                'Jõao',
+                'Marcos',
+            ]
         }
+    },
+    methods: {
+        onSubmit() {
+            if (!this.form) return
+            setTimeout(() => {
+                this.loading = true
+            }, 2000)
+            setTimeout(() => {
+                this.loading = false
+                this.$swal("Sucesso", "Agendamento cadastrado com sucesso!", "success");
+            }, 4000)
+
+            setTimeout(() => {
+                this.$router.push('/TelaAllAgendamentos')
+            }, 6000);
+
+            const obj = {
+                Data: this.date,
+                Horario: this.horarioSelect,
+                Serviço: this.servicoSelect,
+                Barbeiro: this.barbeiroSelect
+            }
+            console.log(obj)
+        },
+
+        select(value) {
+            if (value) return true
+
+            return 'Select an item.'
+        },
+        required(v) {
+            return !!v || "Preencha o campo "
+        },
     }
 }
 
