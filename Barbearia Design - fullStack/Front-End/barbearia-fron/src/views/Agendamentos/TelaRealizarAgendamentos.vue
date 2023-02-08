@@ -56,6 +56,7 @@
 
 
 <script>
+import {RegisterScheduling} from '@/Services/Api'
 import ContainerBoxVue from '@/components/ContainerBox.vue';
 import NavBar from '@/components/NavBar.vue';
 export default {
@@ -69,6 +70,7 @@ export default {
         return {
             form: false,
             date: '',
+            barberEnum:null,
             horarioSelect: null,
             servicoSelect: null,
             barbeiroSelect: null,
@@ -96,35 +98,54 @@ export default {
                 'Sombrancelha e Barba'
             ],
             itemsBarbeiro: [
-                'Fagner ',
+                'Fagner' ,
                 'Pedro',
                 'Jõao',
-                'Marcos',
+                
             ]
         }
     },
     methods: {
-        onSubmit() {
+        async onSubmit() {
             if (!this.form) return
             setTimeout(() => {
                 this.loading = true
             }, 2000)
-            setTimeout(() => {
-                this.loading = false
-                this.$swal("Sucesso", "Agendamento cadastrado com sucesso!", "success");
-            }, 4000)
-
-            setTimeout(() => {
-                this.$router.push('/TelaAllAgendamentos')
-            }, 6000);
-
-            const obj = {
-                Data: this.date,
-                Horario: this.horarioSelect,
-                Serviço: this.servicoSelect,
-                Barbeiro: this.barbeiroSelect
+            const UserId = localStorage.getItem("IdUser")
+            if (this.barbeiroSelect == 'Fagner'){
+                this.barberEnum = 0;
             }
-            console.log(obj)
+            else{
+                if(this.barbeiroSelect == 'Pedro'){
+                    this.barberEnum = 1;
+                }
+                else{
+                    this.barberEnum = 2
+                }
+            }
+
+            const result = await RegisterScheduling (UserId, this.date, this.servicoSelect, this.horarioSelect, this.barberEnum)
+            if (result === 200){
+                this.loading = false
+                this.$swal("Sucesso", "Agendado com sucesso!", "success");
+                this.$router.push("/TelaMeusAgendamentos")
+            }
+         
+           else
+            {
+                this.loading = false
+                if(result === 401){
+                    this.$swal("Error", "Sessão Expirada, Saia e logue novamente", "error");
+                }
+                else{
+                    this.$swal("Error", "Não foi Possivel realizar agendamento", "error");
+                    
+                }
+            }
+        
+
+            
+
         },
 
         select(value) {

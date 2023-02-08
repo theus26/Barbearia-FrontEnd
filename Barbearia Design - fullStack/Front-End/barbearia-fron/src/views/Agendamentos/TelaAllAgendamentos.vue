@@ -18,13 +18,13 @@
                 </div>
             </div>
             <br>
-        
+
             <div class="container-table">
                 <v-table>
                     <thead>
                         <tr>
                             <th class="text-left">
-                               <p class="txt">Cliente</p> 
+                                <p class="txt">Cliente</p>
                             </th>
                             <th class="text-left">
                                 Data do Agendamento
@@ -38,7 +38,7 @@
                             <th class="text-left">
                                 Barbeiro
                             </th>
-    
+
                             <th class="text-left">
                                 Ações do Agendamento
                             </th>
@@ -46,20 +46,20 @@
                     </thead>
                     <tbody>
                         <tr v-for="item in desserts" :key="item.Indice">
-    
-                            <td>{{ item.Cliente }}</td>
-                            <td>{{ item.DatadoAgendamento }}</td>
-                            <td>{{ item.ServiçoDesejado }}</td>
-                            <td>{{ item.Horario }}</td>
-                            <td>{{ item.Barbeiro }}</td>
+
+                            <td>{{ item.idSchedulling }}</td>
+                            <td>{{ item.hairCurtDate }}</td>
+                            <td>{{ item.desiredService }}</td>
+                            <td>{{ item.time }}</td>
+                            <td>{{ item.barber }}</td>
                             <td>
                                 <div class="container-btn">
                                     <button title="Concluir Agendamento" class="btn" color="sucess"
-                                        @click="Concluir(item.Indice)">
+                                        @click="Concluir(item.idSchedulling)">
                                         <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
                                     </button>
                                     <button title="Cancelar Agendamento" class="btn2" color="sucess"
-                                        @click="Cancelar(item.Indice)">
+                                        @click="Cancelar(item.idSchedulling)">
                                         <v-icon end icon="mdi-cancel"></v-icon>
                                     </button>
                                 </div>
@@ -80,7 +80,9 @@
 
 
 <script>
-
+import { DeleteScheduling } from '@/Services/Api'
+import { CompleteScheduling } from '@/Services/Api'
+import { GetAll } from '@/Services/Api';
 import NavBar from '@/components/NavBar.vue';
 import ContainerBox from '@/components/ContainerBox.vue';
 export default {
@@ -95,96 +97,67 @@ export default {
             page: 1,
             concluido: [],
             desserts: [
-                {
-                    Indice: 1,
-                    Cliente: 'Matheus Filipe',
-                    DatadoAgendamento: '03/02/2023',
-                    ServiçoDesejado: 'Corte de cabelo, Sombrancelha e Barba',
-                    Horario: '08:00h ',
-                    Barbeiro: 'Fagner'
-                },
-                {
-                    Indice: 2,
-                    Cliente: 'Gabriel Filipe',
-                    DatadoAgendamento: '04/02/2023',
-                    ServiçoDesejado: 'Corte de cabelo, Sombrancelha',
-                    Horario: '09:00h ',
-                    Barbeiro: 'Pedro'
-                },
-                {
-                    Indice: 3,
-                    Cliente: 'Pedro Filipe',
-                    DatadoAgendamento: '05/02/2023',
-                    ServiçoDesejado: 'Corte de cabelo e Barba',
-                    Horario: '10:00h ',
-                    Barbeiro: 'Fagner'
-                },
-                {
-                    Indice: 4,
-                    Cliente: 'Jõao Filipe',
-                    DatadoAgendamento: '06/02/2023',
-                    ServiçoDesejado: 'Sombrancelha e Barba',
-                    Horario: '11:00h ',
-                    Barbeiro: 'Pedro'
-                },
-                {
-                    Indice: 5,
-                    Cliente: 'Filipe',
-                    DatadoAgendamento: '04/02/2023',
-                    ServiçoDesejado: 'Sombrancelha',
-                    Horario: '12:00h ',
-                    Barbeiro: 'Fagner'
-                },
-                {
-                    Indice: 6,
-                    Cliente: 'Lucas Filipe',
-                    DatadoAgendamento: '03/02/2023',
-                    ServiçoDesejado: 'Barba',
-                    Horario: '14:00h ',
-                    Barbeiro: 'Pedro'
-                },
+
             ],
         }
     },
     methods: {
-        Concluir(v) {
+        async Concluir(v) {
+            const IdScheduling = v
+            const SchedulingCompleted = true
+            const result = await CompleteScheduling(IdScheduling, SchedulingCompleted);
+            if (result === 200) {
+                this.$swal(
+                    'Concluido!',
+                    'Agendamento Concluido com Sucesso.',
+                    'success'
+                )
+            }
+            else {
+                this.$swal(
+                    'Error!',
+                    'Não foi possivel Concluir agendamento.',
+                    'error'
+                )
+            }
 
-            this.$swal({
-                title: 'Concluir Agendamento?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, Concluir!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.$swal(
-                        'Concluido!',
-                        'Agendamento Concluido com Sucesso.',
-                        'success'
-                    )
-                }
-            })
         },
-        Cancelar(v){
-            this.$swal({
-                title: 'Cancelar Agendamento?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, Cancelar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.$swal(
-                        'Concluido!',
-                        'Agendamento Cancelado com Sucesso.',
-                        'success'
+        async Cancelar(v) {
+            const IdScheduling = v
+            const result = await DeleteScheduling(IdScheduling)
+            if (result === 200) {
+                this.$swal(
+                    'Concluido!',
+                    'Agendamento Cancelado com Sucesso.',
+                    'success'
+                )
+            }
+            else {
+                this.$swal(
+                    'Error!',
+                    'Erro ao Cancelar agendamento.',
+                    'error'
                     )
                 }
-            })
+                this.GetAllScheduling();
+        },
+
+        async GetAllScheduling() {
+            const result = await GetAll()
+            if (result.status === 200) {
+                this.desserts = result.data.schedulings
+                console.log(this.desserts)
+            }
         }
-    }
+    },
+
+
+
+
+mounted(){
+    this.GetAllScheduling();
+}
+
 }
 
 
@@ -197,17 +170,19 @@ export default {
     font-weight: bold;
     padding: 0.5rem;
 }
-.container-header{
+
+.container-header {
     display: flex;
     gap: 1rem;
 }
 
-.container{
+.container {
     border: 1px solid #f5f4f4;
     background-color: #f5f4f4;
     padding: 2rem 5rem 5rem;
-    
+
 }
+
 .v-table {
     padding: 1.5rem;
 }
@@ -225,7 +200,8 @@ export default {
     margin-left: 2rem;
     color: red;
 }
-.txt{
+
+.txt {
     font-weight: bold;
     font-size: xx-small;
 }

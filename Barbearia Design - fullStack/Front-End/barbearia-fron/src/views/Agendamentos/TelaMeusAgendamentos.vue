@@ -103,17 +103,17 @@
                     <tbody>
                         <tr v-for="item in desserts" :key="item.Indice">
 
-                            <td>{{ item.DatadoAgendamento }}</td>
-                            <td>{{ item.ServiçoDesejado }}</td>
-                            <td>{{ item.Horario }}</td>
-                            <td>{{ item.Barbeiro }}</td>
+                            <td>{{ item.hairCurtDate }}</td>
+                            <td>{{ item.desiredService }}</td>
+                            <td>{{ item.time }}</td>
+                            <td>{{ item.barber }}</td>
                             <td>
                                 <div class="container-btn">
                                     <button title="Editar Agendamento" class="btn" color="sucess" @click="Editar(item)">
                                         <v-icon end icon="mdi-pencil"></v-icon>
                                     </button>
                                     <button title="Cancelar Agendamento" class="btn2" color="sucess"
-                                        @click="Cancelar(item.Indice)">
+                                        @click="Cancelar(item.idSchedulling)">
                                         <v-icon end icon="mdi-cancel"></v-icon>
                                     </button>
                                 </div>
@@ -136,7 +136,13 @@
 
 
 <script>
+import moment from 'moment'
+moment.locale('pt-br');
+import { UpdateScheduling } from '@/Services/Api';
+import { DeleteScheduling } from '@/Services/Api'
+import { GetAllPerId } from '@/Services/Api';
 import NavBar from '@/components/NavBar.vue';
+
 export default {
     name: 'TelaPrincipal',
     components: {
@@ -147,44 +153,15 @@ export default {
         return {
             page: 1,
             dialog: false,
+            barberEnum: null,
             concluido: [],
             desserts: [
-                {
-                    Indice: 1,
-                    Cliente: 'Matheus Filipe',
-                    DatadoAgendamento: '03/02/2023',
-                    ServiçoDesejado: 'Corte de cabelo, Sombrancelha e Barba',
-                    Horario: '08:00h ',
-                    Barbeiro: 'Fagner'
-                },
-                {
-                    Indice: 2,
-                    Cliente: 'Matheus Filipe',
-                    DatadoAgendamento: '04/02/2023',
-                    ServiçoDesejado: 'Corte de cabelo, Sombrancelha',
-                    Horario: '09:00h ',
-                    Barbeiro: 'Pedro'
-                },
-                {
-                    Indice: 3,
-                    Cliente: 'Matheus Filipe',
-                    DatadoAgendamento: '05/02/2023',
-                    ServiçoDesejado: 'Corte de cabelo e Barba',
-                    Horario: '10:00h ',
-                    Barbeiro: 'Fagner'
-                },
-                {
-                    Indice: 4,
-                    Cliente: 'Matheus Filipe',
-                    DatadoAgendamento: '06/02/2023',
-                    ServiçoDesejado: 'Sombrancelha e Barba',
-                    Horario: '11:00h ',
-                    Barbeiro: 'Pedro'
-                },
+             
             ],
+            DateFormat: null,
             form: false,
             loading: null,
-            date: '',
+            date: null,
             horarioSelect: null,
             servicoSelect: null,
             barbeiroSelect: null,
@@ -215,7 +192,6 @@ export default {
                 'Fagner ',
                 'Pedro',
                 'Jõao',
-                'Marcos',
             ]
         }
     },
@@ -224,49 +200,81 @@ export default {
             this.dialog = true
             var user = v;
             this.concluido = user
-            this.barbeiroSelect = this.concluido.Barbeiro
-            this.servicoSelect = this.concluido.ServiçoDesejado
-            this.horarioSelect = this.concluido.Horario
+            console.log(this.concluido)
+            this.barbeiroSelect = this.concluido.barber
+            this.servicoSelect = this.concluido.desiredService
+            this.horarioSelect = this.concluido.time
+            localStorage.setItem("IdScheduling", this.concluido.idSchedulling)
+            
         },
-        Cancelar(v) {
-            this.$swal({
-                title: 'Cancelar Agendamento?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, Cancelar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.$swal(
-                        'Concluido!',
-                        'Agendamento Cancelado com Sucesso.',
-                        'success'
+        async Cancelar(v) {
+            const IdScheduling = v
+            const result = await DeleteScheduling(IdScheduling)
+            if (result === 200) {
+                this.$swal(
+                    'Concluido!',
+                    'Agendamento Cancelado com Sucesso.',
+                    'success'
+                )
+            }
+            else {
+                this.$swal(
+                    'Error!',
+                    'Erro ao Cancelar agendamento.',
+                    'error'
                     )
                 }
-            })
+            this.GetallScheduling();
         },
 
-        onSubmit() {
+        async onSubmit() {
+
             setTimeout(() => {
                 this.loading = true
             }, 2000)
-            setTimeout(() => {
-                this.loading = false
-                this.$swal("Sucesso", "Agendamento Editado com sucesso!", "success");
-            }, 4000)
 
-            setTimeout(() => {
-                this.dialog = false
-            }, 6000);
+            const IdUser = localStorage.getItem("IdUser");
+            const IdScheduling = localStorage.getItem("IdScheduling")
 
-            const obj = {
-                Data: this.date,
-                Horario: this.horarioSelect,
-                Serviço: this.servicoSelect,
-                Barbeiro: this.barbeiroSelect
+            if (this.barbeiroSelect == 'Jõao'){
+                this.barberEnum = 0;
             }
-            console.log(obj)
+            else{
+                if(this.barbeiroSelect == 'Pedro'){
+                    this.barberEnum = 1;
+                }
+                else{
+                    this.barberEnum = 2
+                }
+            }
+         
+            const result = await UpdateScheduling(IdUser, IdScheduling, this.date, this.servicoSelect, this.horarioSelect, this.barberEnum)
+            if (result === 200){
+                this.dialog = false
+                this.loading = false
+                this.$swal(
+                    'Concluido!',
+                    'Agendamento Editado com Sucesso.',
+                    'success'
+                )
+            }
+            else{
+                this.$swal(
+                    'Error!',
+                    'Erro ao Editar agendamento.',
+                    'error'
+                    )
+                    this.dialog = false
+            }
+            
+        },
+
+        async GetallScheduling(){
+            const IdUser = localStorage.getItem("IdUser");
+            const result = await GetAllPerId(IdUser);
+            if (result.status === 200){
+                const arr = this.desserts = result.data.schedulings
+            }
         },
 
         select(value) {
@@ -279,7 +287,7 @@ export default {
         },
     },
     mounted(){
-        console.log(this.desserts)
+        this.GetallScheduling();
     }
 
 }
