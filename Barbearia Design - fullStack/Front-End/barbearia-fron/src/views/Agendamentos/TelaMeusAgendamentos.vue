@@ -64,7 +64,14 @@
             </v-row>
         </div>
         <br>
+
         <div class="container">
+
+            <div class="info" v-show="info">
+                <v-alert type="warning" title="Você não possui nenhum agendamento..." text=""
+                    variant="tonal"></v-alert>
+            </div>
+
 
             <div class="container-header">
                 <div class="img">
@@ -153,10 +160,11 @@ export default {
         return {
             page: 1,
             dialog: false,
+            info: false,
             barberEnum: null,
             concluido: [],
             desserts: [
-             
+
             ],
             DateFormat: null,
             form: false,
@@ -205,7 +213,7 @@ export default {
             this.servicoSelect = this.concluido.desiredService
             this.horarioSelect = this.concluido.time
             localStorage.setItem("IdScheduling", this.concluido.idSchedulling)
-            
+
         },
         async Cancelar(v) {
             const IdScheduling = v
@@ -222,8 +230,8 @@ export default {
                     'Error!',
                     'Erro ao Cancelar agendamento.',
                     'error'
-                    )
-                }
+                )
+            }
             this.GetallScheduling();
         },
 
@@ -236,20 +244,20 @@ export default {
             const IdUser = localStorage.getItem("IdUser");
             const IdScheduling = localStorage.getItem("IdScheduling")
 
-            if (this.barbeiroSelect == 'Jõao'){
+            if (this.barbeiroSelect == 'Jõao') {
                 this.barberEnum = 0;
             }
-            else{
-                if(this.barbeiroSelect == 'Pedro'){
+            else {
+                if (this.barbeiroSelect == 'Pedro') {
                     this.barberEnum = 1;
                 }
-                else{
+                else {
                     this.barberEnum = 2
                 }
             }
-         
+
             const result = await UpdateScheduling(IdUser, IdScheduling, this.date, this.servicoSelect, this.horarioSelect, this.barberEnum)
-            if (result === 200){
+            if (result === 200) {
                 this.dialog = false
                 this.loading = false
                 this.$swal(
@@ -258,22 +266,48 @@ export default {
                     'success'
                 )
             }
-            else{
+            else {
                 this.$swal(
                     'Error!',
                     'Erro ao Editar agendamento.',
                     'error'
-                    )
-                    this.dialog = false
+                )
+                this.dialog = false
+                this.loading = false
             }
-            
+
         },
 
-        async GetallScheduling(){
+        async GetallScheduling() {
             const IdUser = localStorage.getItem("IdUser");
             const result = await GetAllPerId(IdUser);
-            if (result.status === 200){
-                const arr = this.desserts = result.data.schedulings
+
+            if (result.status === 200) {
+
+                if (result.data.count === 0) {
+                    this.info = true
+                }
+                if (result.data.count != 0) {
+                    this.info = false
+                    const arr = this.desserts = result.data.schedulings
+                }
+            }
+            else{
+                if(result.code === 401){
+                    
+                    this.$swal(
+                        'Error!',
+                        'Sessão Expirada!.',
+                        'error'
+                    )
+                    
+                    setTimeout(() => {
+                        this.$router.push('/')
+            }, 3000)
+          
+                    
+                }
+               
             }
         },
 
@@ -286,7 +320,7 @@ export default {
             return !!v || "Preencha o campo "
         },
     },
-    mounted(){
+    mounted() {
         this.GetallScheduling();
     }
 
@@ -348,5 +382,9 @@ export default {
 
 .container-form {
     padding: 6rem 0 0 0;
+}
+
+.info {
+    padding-bottom: 2rem;
 }
 </style>

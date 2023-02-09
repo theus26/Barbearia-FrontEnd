@@ -37,10 +37,10 @@ export const RegisterUser = async (Name, Email, Password, CPF, Phone) => {
 
 export const RegisterScheduling = async (IdUser, HairCurtDate, DesiredService, Time, barberEnum) =>{
     return api.post('User/Scheduling', {IdUser, HairCurtDate, DesiredService, Time, barberEnum}).then(result =>{
-        return result.status
+        return result
     })
     .catch (e =>{
-        return {code: 400}   
+        return {code: 400, CodeUnauthorized: 401}   
     })
 }
 
@@ -48,9 +48,9 @@ export const GetAllPerId = async (IdUser) =>{
     return api.get('User/GetSchedulingPerIdUser/' + IdUser).then(result =>{
         return result
     })
-    .catch(e => {
-        return {code: 400}
-    })
+    .catch((err) => {
+        return {code: 401} 
+     });
 }
 
 export const GetAll = async () =>{
@@ -58,7 +58,7 @@ export const GetAll = async () =>{
         return result;
     })
     .catch(e => {
-        return {code: 400}
+        return {code: 401}
     })
 }
 

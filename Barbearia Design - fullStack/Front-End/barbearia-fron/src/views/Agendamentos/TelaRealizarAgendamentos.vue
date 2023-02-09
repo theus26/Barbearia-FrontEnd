@@ -125,29 +125,33 @@ export default {
             }
 
             const result = await RegisterScheduling (UserId, this.date, this.servicoSelect, this.horarioSelect, this.barberEnum)
-            if (result === 200){
+            if (result.status === 200){
                 this.loading = false
                 this.$swal("Sucesso", "Agendado com sucesso!", "success");
                 this.$router.push("/TelaMeusAgendamentos")
             }
-         
-           else
-            {
-                this.loading = false
-                if(result === 401){
-                    this.$swal("Error", "Sessão Expirada, Saia e logue novamente", "error");
-                }
+                
                 else{
+
+                    if(result.code === 400){
+                        this.loading = false
                     this.$swal("Error", "Não foi Possivel realizar agendamento", "error");
+                }
+
+                    if (result.CodeUnauthorized === 401){
+                        this.loading = false
+                        this.$swal("Error", "Sessão Expirada", "error");
+
+                        setTimeout(() => {
+                        this.$router.push('/')
+            }, 3000)
+          
+                    }
                     
                 }
             }
-        
-
-            
-
         },
-
+    
         select(value) {
             if (value) return true
 
@@ -157,7 +161,7 @@ export default {
             return !!v || "Preencha o campo "
         },
     }
-}
+
 
 
 </script>

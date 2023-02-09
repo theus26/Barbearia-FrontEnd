@@ -146,7 +146,17 @@ export default {
             const result = await GetAll()
             if (result.status === 200) {
                 this.desserts = result.data.schedulings
-                console.log(this.desserts)
+            }
+            if (result.code === 401){
+                this.$swal(
+                        'Error!',
+                        'Sessão Expirada!.',
+                        'error'
+                    )
+                    
+                    setTimeout(() => {
+                        this.$router.push('/')
+            }, 3000)
             }
         }
     },
