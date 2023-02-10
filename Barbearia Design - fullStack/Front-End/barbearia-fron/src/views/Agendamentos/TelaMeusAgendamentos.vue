@@ -290,6 +290,15 @@ export default {
                 if (result.data.count != 0) {
                     this.info = false
                     const arr = this.desserts = result.data.schedulings
+                    //Ordendado array pelas datas mais recentes
+                    arr.sort(function (a, b){
+                    if(a.hairCurtDate < b.hairCurtDate){
+                        return -1
+                    }
+                    else{
+                        return true
+                    }
+                })
                 }
             }
             else{

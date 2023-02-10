@@ -9,7 +9,7 @@
             <hr>
         </div>
         <div class="container-all">
-            <div class="containe-cards">
+            <div class="containe-cards" v-show="meus">
                 <div class="contaienr">
                     <div title="Clique aqui!" class="container-geral">
                         <div class="container-menu" @click="Mys">
@@ -25,8 +25,10 @@
                     </div>
                 </div>
             </div>
+
+          
     
-            <div class="containe-cards">
+            <div class="containe-cards" v-show="todos">
                 <div class="contaienr">
                     <div title="Clique aqui!" class="container-geral">
                         <div class="container-menu" @click="all">
@@ -42,8 +44,10 @@
                     </div>
                 </div>
             </div>
+
+            
     
-            <div class="containe-cards">
+            <div class="containe-cards" v-show="efetuar">
                 <div class="contaienr">
                     <div title="Clique aqui!" class="container-geral" @click="perform">
                         <div class="container-menu" >
@@ -53,6 +57,22 @@
                             <div class="container-title">
                                 <span class="txt realizar">
                                     Efetuar Agendamentos
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="containe-cards" v-show="editar">
+                <div class="contaienr">
+                    <div title="Clique aqui!" class="container-geral">
+                        <div class="container-menu" @click="Editar">
+                            <div class="container-svg">
+                                <v-img class="image" src="../assets/do-utilizador.svg" alt="Calendar" width="70" heigth="70"></v-img>
+                            </div>
+                            <div class="container-title">
+                                <span class="txt">
+                                    Editar Usuario
                                 </span>
                             </div>
                         </div>
@@ -77,7 +97,11 @@ export default{
 
     data(){
         return{
-            user:'Admin'
+            user:'Admin',
+            meus: false,
+            todos: false,
+            efetuar: false,
+            editar: false
         }
     },
 
@@ -91,12 +115,31 @@ export default{
         perform(){
             setTimeout(() => (this.$router.push('/TelaRealizarAgendamentos')), 500)
         },
+        Editar(){
+            setTimeout(() => (this.$router.push('/EditarUsuario')), 500)
+        },
         getNameUser(){
             this.user = localStorage.getItem("Name")
+        },
+        seeIsAdmin(){
+            const Admin = localStorage.getItem("Admin")
+            console.log(Admin)
+            if (Admin == 'true'){
+                this.todos = true
+                this.editar = true
+            }
+            else{
+                this.todos = false
+                this.meus = true
+                this.efetuar = true
+                this.editar = true
+            }
+
         }
     },
     mounted(){
         this.getNameUser();
+        this.seeIsAdmin();
     }
     
     
@@ -127,7 +170,9 @@ export default{
     align-items: center;
     gap: 1.5rem;
     padding: 0.5rem;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.18, red ) ;
 }
+
 .txt{
     font-size: medium;
     font-weight: bold;

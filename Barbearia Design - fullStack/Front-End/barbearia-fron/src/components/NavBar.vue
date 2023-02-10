@@ -13,12 +13,13 @@
                     </div>
                 </div>
                 <div class="dropdown-content" v-show="disappear">
-                        <button  title="Seus Agendamentos" @click="Mys" id="logout">Meus Agendamentos</button>
+                        <button  title="Seus Agendamentos" @click="Mys" id="logout" v-show="meus">Meus Agendamentos</button>
                         <hr>
-                        <button title="Todos Agendamentos" @click="all" id="logout">Todos Agendamentos</button>
+                        <button title="Todos Agendamentos" @click="all" id="logout" v-show="todos">Todos Agendamentos</button>
                         <hr>
-                        <button title="Realizar agendamento" @click="perform" id="logout">Realizar Agendamento</button>
+                        <button title="Realizar agendamento" @click="perform" id="logout" v-show="efetuar">Realizar Agendamento</button>
                         <hr>
+                        <button title="Editar Usuario" @click="Edit" id="logout" v-show="editar">Editar Usuario</button>
                     </div>
             </div>
 
@@ -42,7 +43,11 @@ export default {
     data() {
         return {
             some: false,
-            disappear:false
+            disappear:false,
+            meus: false,
+            todos: false,
+            efetuar:false,
+            editar: false
         }
 
     },
@@ -63,6 +68,24 @@ export default {
         perform(){
             setTimeout(() => (this.$router.push('/TelaRealizarAgendamentos')), 500)
         },
+        Edit(){
+            setTimeout(() => (this.$router.push('/EditarUsuario')), 500)
+        },
+        seeIsAdmin(){
+            const Admin = localStorage.getItem("Admin")
+            if (Admin == 'true'){
+                this.todos = true
+                this.editar = true
+            }
+            else{
+                this.todos = false
+                this.meus = true
+                this.efetuar = true
+                this.editar = true
+            }
+
+        },
+
         async Logout() {
             const IdUser = localStorage.getItem("IdUser")
             const Token = localStorage.getItem("Token")
@@ -74,8 +97,11 @@ export default {
             else{
                 this.$swal("Error", "Error ao sair", "error")
             }
-        }
+        },
     },
+    mounted(){
+        this.seeIsAdmin();
+    }
 };
 </script>
   

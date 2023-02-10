@@ -70,7 +70,8 @@ export default {
           const token = result.data.token
           const IdUser = result.data.idUser
           const Name = result.data.userName
-          localStorage.setItem("Token", token), localStorage.setItem("IdUser", IdUser), localStorage.setItem("Name", Name)
+          const Admin = result.data.isBarber
+          localStorage.setItem("Token", token), localStorage.setItem("IdUser", IdUser), localStorage.setItem("Name", Name), localStorage.setItem("Admin", Admin)
           setTimeout(() => (this.loading = false ,this.$router.push('/TelaPrincipal')), 1500)
       }
       else {     

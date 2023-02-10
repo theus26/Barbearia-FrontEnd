@@ -47,7 +47,7 @@
                     <tbody>
                         <tr v-for="item in desserts" :key="item.Indice">
 
-                            <td>{{ item.idSchedulling }}</td>
+                            <td>{{ item.nameUser }}</td>
                             <td>{{ item.hairCurtDate }}</td>
                             <td>{{ item.desiredService }}</td>
                             <td>{{ item.time }}</td>
@@ -55,7 +55,7 @@
                             <td>
                                 <div class="container-btn">
                                     <button title="Concluir Agendamento" class="btn" color="sucess"
-                                        @click="Concluir(item.idSchedulling)">
+                                        @click="Concluir(item, item.idSchedulling)">
                                         <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
                                     </button>
                                     <button title="Cancelar Agendamento" class="btn2" color="sucess"
@@ -102,11 +102,17 @@ export default {
         }
     },
     methods: {
-        async Concluir(v) {
-            const IdScheduling = v
+        async Concluir(v, i) {
+            const IdScheduling = i
             const SchedulingCompleted = true
+
             const result = await CompleteScheduling(IdScheduling, SchedulingCompleted);
             if (result === 200) {
+                const arr = this.desserts;
+                const Indice = arr.indexOf(v)
+                const remove = arr.splice(Indice, 1)
+
+
                 this.$swal(
                     'Concluido!',
                     'Agendamento Concluido com Sucesso.',
@@ -137,26 +143,36 @@ export default {
                     'Error!',
                     'Erro ao Cancelar agendamento.',
                     'error'
-                    )
-                }
-                this.GetAllScheduling();
+                )
+            }
+            this.GetAllScheduling();
         },
 
         async GetAllScheduling() {
             const result = await GetAll()
             if (result.status === 200) {
-                this.desserts = result.data.schedulings
+                const agen = this.desserts = result.data.schedulings
+
+                agen.sort(function (a, b) {
+                    if (a.hairCurtDate < b.hairCurtDate) {
+                        return -1
+                    }
+                    else {
+                        return true
+                    }
+                })
+
             }
-            if (result.code === 401){
+            if (result.code === 401) {
                 this.$swal(
-                        'Error!',
-                        'Sessão Expirada!.',
-                        'error'
-                    )
-                    
-                    setTimeout(() => {
-                        this.$router.push('/')
-            }, 3000)
+                    'Error!',
+                    'Sessão Expirada!.',
+                    'error'
+                )
+
+                setTimeout(() => {
+                    this.$router.push('/')
+                }, 3000)
             }
         }
     },
@@ -164,9 +180,9 @@ export default {
 
 
 
-mounted(){
-    this.GetAllScheduling();
-}
+    mounted() {
+        this.GetAllScheduling();
+    }
 
 }
 

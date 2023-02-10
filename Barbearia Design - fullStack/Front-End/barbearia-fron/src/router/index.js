@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import TelaCadastro from "../views/TelaCadastro.vue"
+import EditarUsuario from "../views/EditarUsuario.vue"
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: "/TelaCadastro",
     name: "Tela de Cadastro",
     component:TelaCadastro
+  },
+  {
+    path: "/EditarUsuario",
+    name: "EditarUsuario",
+    component:EditarUsuario
   },
   {
     path: "/TelaPrincipal",

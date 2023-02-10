@@ -89,3 +89,11 @@ export const UpdateScheduling = async (IdUser, IdScheduling, HairCurtDate, Desir
         return {code:400}
     })
 }
+ export const UpdateUser = async (IdUser,Name, Email, Password, CPF, Phone,) =>{
+    return api.put('User/UpdateUser', {IdUser, Name, Email, Password, CPF, Phone }).then(result =>{
+        return result
+    })
+    .catch (e =>{
+        return {code: 400, CodeUnauthorized: 401}   
+    })
+ }
