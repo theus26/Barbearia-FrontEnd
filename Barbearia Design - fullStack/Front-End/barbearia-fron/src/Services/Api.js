@@ -97,3 +97,12 @@ export const UpdateScheduling = async (IdUser, IdScheduling, HairCurtDate, Desir
         return {code: 400, CodeUnauthorized: 401}   
     })
  }
+
+ export const GetAllBarber = async (Name) =>{
+    return api.get('User/GetBarberAppointment/' + Name).then(result =>{
+        return result
+    })
+    .catch (e =>{
+        return {code: 400, CodeUnauthorized: 401}   
+    })
+ }

@@ -5,15 +5,22 @@
         </div>
         <br>
 
+        <br>
+
         <div class="container">
+
+            <div class="info" v-show="info">
+                <v-alert type="warning" title="Você não possui nenhum agendamento..." text="" variant="tonal"></v-alert>
+            </div>
+
 
             <div class="container-header">
                 <div class="img">
-                    <v-img src="../../assets/agenda.svg" width="60" heigth="60"></v-img>
+                    <v-img src="../../assets/calendario-_1_.svg" width="60" heigth="60"></v-img>
                 </div>
 
                 <div class="containe-title">
-                    Todos Agendamentos
+                    Você Possui {{ Count }} Agendamentos, {{ Name }}
                     <hr>
                 </div>
             </div>
@@ -24,9 +31,6 @@
                     <thead>
                         <tr>
                             <th class="text-left">
-                                <p class="txt">Cliente</p>
-                            </th>
-                            <th class="text-left">
                                 Data do Agendamento
                             </th>
                             <th class="text-left fon">
@@ -34,9 +38,6 @@
                             </th>
                             <th class="text-left">
                                 Horário
-                            </th>
-                            <th class="text-left">
-                                Barbeiro
                             </th>
 
                             <th class="text-left">
@@ -47,11 +48,10 @@
                     <tbody>
                         <tr v-for="item in desserts" :key="item.Indice">
 
-                            <td>{{ item.nameUser }}</td>
                             <td>{{ item.hairCurtDate }}</td>
                             <td>{{ item.desiredService }}</td>
                             <td>{{ item.time }}</td>
-                            <td>{{ item.barber }}</td>
+
                             <td>
                                 <div class="container-btn">
                                     <button title="Concluir Agendamento" class="btn" color="sucess"
@@ -79,26 +79,40 @@
 </template>
 
 
+
+
 <script>
-import { DeleteScheduling } from '@/Services/Api'
-import { CompleteScheduling } from '@/Services/Api'
-import { GetAll } from '@/Services/Api';
+import moment from 'moment'
+moment.locale('pt-br');
+
+import { GetAllBarber } from '@/Services/Api';
+import { CompleteScheduling } from '@/Services/Api';
+import { DeleteScheduling } from '@/Services/Api';
 import NavBar from '@/components/NavBar.vue';
-import ContainerBox from '@/components/ContainerBox.vue';
+
 export default {
     name: 'TelaPrincipal',
     components: {
         NavBar,
-        ContainerBox
     },
 
     data() {
         return {
             page: 1,
+            dialog: false,
+            info: false,
+            barberEnum: null,
             concluido: [],
             desserts: [
 
             ],
+            DateFormat: null,
+            form: false,
+            loading: null,
+            Name: '',
+            Count: '',
+            loading: null,
+
         }
     },
     methods: {
@@ -125,6 +139,7 @@ export default {
                     'error'
                 )
             }
+           
 
         },
         async Cancelar(v) {
@@ -144,50 +159,55 @@ export default {
                     'error'
                 )
             }
-            this.GetAllScheduling();
+            this.GetallSchedulingBarber();
         },
 
-        async GetAllScheduling() {
-            const result = await GetAll()
+        async GetallSchedulingBarber() {
+            const Name = localStorage.getItem("Name");
+            const result = await GetAllBarber(Name);
+            this.Name = Name
+
             if (result.status === 200) {
-                const agen = this.desserts = result.data.schedulings
-
-                agen.sort(function (a, b) {
-                    if (a.hairCurtDate < b.hairCurtDate) {
-                        return -1
-                    }
-                    else {
-                        return true
-                    }
-                })
-                
-
+                this.Count = result.data.count
+                if (result.data.count === 0) {
+                    this.info = true
+                }
+                if (result.data.count != 0) {
+                    this.info = false
+                    const arr = this.desserts = result.data.schedulings
+                    //Ordendado array pelas datas mais recentes
+                    arr.sort(function (a, b) {
+                        if (a.hairCurtDate < b.hairCurtDate) {
+                            return -1
+                        }
+                        else {
+                            return true
+                        }
+                    })
+                }
             }
-            if (result.code === 401) {
-                this.$swal(
-                    'Error!',
-                    'Sessão Expirada!.',
-                    'error'
-                )
+            else {
+                if (result.code === 401) {
 
-                setTimeout(() => {
-                    this.$router.push('/')
-                }, 3000)
+                    this.$swal(
+                        'Error!',
+                        'Sessão Expirada!.',
+                        'error'
+                    )
+                    setTimeout(() => {
+                        this.$router.push('/')
+                    }, 3000)
+
+                }
             }
-        }
+        },
+
     },
-
-
-
-
     mounted() {
-        this.GetAllScheduling();
+        this.GetallSchedulingBarber();
     }
 
 }
-
-
-
 </script>
 
 <style scoped>
@@ -230,5 +250,24 @@ export default {
 .txt {
     font-weight: bold;
     font-size: xx-small;
+}
+
+.dialog-bottom-transition-enter-active,
+.dialog-bottom-transition-leave-active {
+    transition: transform .2s ease-in-out;
+}
+
+.container-title {
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
+}
+
+.container-form {
+    padding: 6rem 0 0 0;
+}
+
+.info {
+    padding-bottom: 2rem;
 }
 </style>

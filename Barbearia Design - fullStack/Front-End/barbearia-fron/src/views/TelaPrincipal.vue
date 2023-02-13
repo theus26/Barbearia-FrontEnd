@@ -26,6 +26,23 @@
                 </div>
             </div>
 
+            <div class="containe-cards" v-show="barber">
+                <div class="contaienr">
+                    <div title="Clique aqui!" class="container-geral">
+                        <div class="container-menu" @click="Barbers">
+                            <div class="container-svg">
+                                <v-img class="image" src="../assets/img1.svg" alt="Calendar" width="70" heigth="70"></v-img>
+                            </div>
+                            <div class="container-title">
+                                <span class="txt">
+                                     Agendamentos do Barbeiro
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
           
     
             <div class="containe-cards" v-show="todos">
@@ -101,13 +118,17 @@ export default{
             meus: false,
             todos: false,
             efetuar: false,
-            editar: false
+            editar: false,
+            barber: false
         }
     },
 
     methods:{
         Mys(){
             setTimeout(() => (this.$router.push('/TelaMeusAgendamentos')), 500)
+        },
+        Barbers(){
+            setTimeout(() => (this.$router.push('/AgendamentoBarbeiro')), 500)
         },
         all(){
             setTimeout(() => (this.$router.push('/TelaAllAgendamentos')), 500)
@@ -127,6 +148,7 @@ export default{
             if (Admin == 'true'){
                 this.todos = true
                 this.editar = true
+                this.barber = true
             }
             else{
                 this.todos = false

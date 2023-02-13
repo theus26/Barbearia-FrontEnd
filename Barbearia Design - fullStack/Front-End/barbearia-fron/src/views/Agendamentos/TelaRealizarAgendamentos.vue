@@ -56,7 +56,7 @@
 
 
 <script>
-import {RegisterScheduling} from '@/Services/Api'
+import { RegisterScheduling } from '@/Services/Api'
 import ContainerBoxVue from '@/components/ContainerBox.vue';
 import NavBar from '@/components/NavBar.vue';
 export default {
@@ -70,7 +70,7 @@ export default {
         return {
             form: false,
             date: '',
-            barberEnum:null,
+            barberEnum: null,
             horarioSelect: null,
             servicoSelect: null,
             barbeiroSelect: null,
@@ -98,10 +98,10 @@ export default {
                 'Sombrancelha e Barba'
             ],
             itemsBarbeiro: [
-                'Fagner' ,
+                'Fagner',
                 'Pedro',
                 'Jõao',
-                
+
             ]
         }
     },
@@ -112,55 +112,55 @@ export default {
                 this.loading = true
             }, 2000)
             const UserId = localStorage.getItem("IdUser")
-            if (this.barbeiroSelect == 'Fagner'){
+            if (this.barbeiroSelect == 'Fagner') {
                 this.barberEnum = 0;
             }
-            else{
-                if(this.barbeiroSelect == 'Pedro'){
+            else {
+                if (this.barbeiroSelect == 'Pedro') {
                     this.barberEnum = 1;
                 }
-                else{
+                else {
                     this.barberEnum = 2
                 }
             }
 
-            const result = await RegisterScheduling (UserId, this.date, this.servicoSelect, this.horarioSelect, this.barberEnum)
-            if (result.status === 200){
+            const result = await RegisterScheduling(UserId, this.date, this.servicoSelect, this.horarioSelect, this.barberEnum)
+            if (result.status === 200) {
                 this.loading = false
                 this.$swal("Sucesso", "Agendado com sucesso!", "success");
                 this.$router.push("/TelaMeusAgendamentos")
             }
-                
-                else{
 
-                    if(result.code === 400){
-                        this.loading = false
-                    this.$swal("Error", "Não foi Possivel realizar agendamento", "error");
-                }
-
-                    if (result.CodeUnauthorized === 401){
-                        this.loading = false
-                        this.$swal("Error", "Sessão Expirada", "error");
-
-                        setTimeout(() => {
-                        this.$router.push('/')
-            }, 3000)
-          
-                    }
-                    
-                }
+            if (result.code === 400) {
+                this.loading = false
+                this.$swal("Error", "Não foi Possivel realizar agendamento", "error");
             }
-        },
-    
-        select(value) {
-            if (value) return true
 
-            return 'Select an item.'
-        },
-        required(v) {
-            return !!v || "Preencha o campo "
-        },
-    }
+            if (result.CodeUnauthorized === 401) {
+                this.loading = false
+                this.$swal("Error", "Sessão Expirada", "error");
+
+                setTimeout(() => {
+                    this.$router.push('/')
+                }, 3000)
+
+            }
+
+
+
+
+        }
+    },
+
+    select(value) {
+        if (value) return true
+
+        return 'Select an item.'
+    },
+    required(v) {
+        return !!v || "Preencha o campo "
+    },
+}
 
 
 
