@@ -144,17 +144,28 @@ export default{
         },
         seeIsAdmin(){
             const Admin = localStorage.getItem("Admin")
+            const Barber = localStorage.getItem("Barber")
             console.log(Admin)
+            console.log(Barber)
+
             if (Admin == 'true'){
                 this.todos = true
                 this.editar = true
+                this.efetuar = true
+                console.log("Entrou")
+            }
+
+            else if(Barber == 'true'){
                 this.barber = true
+                this.editar = true
+                console.log("Entrou")
             }
             else{
                 this.todos = false
                 this.meus = true
                 this.efetuar = true
                 this.editar = true
+                console.log("Entrou")
             }
 
         }

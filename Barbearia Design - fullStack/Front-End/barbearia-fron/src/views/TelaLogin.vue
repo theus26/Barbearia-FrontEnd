@@ -43,6 +43,7 @@
 <script>
 
 import {Login} from "../Services/Api"
+import { GetSession } from "../Services/Api"
 
 export default {
   data: () => ({
@@ -70,8 +71,9 @@ export default {
           const token = result.data.token
           const IdUser = result.data.idUser
           const Name = result.data.userName
-          const Admin = result.data.isBarber
-          localStorage.setItem("Token", token), localStorage.setItem("IdUser", IdUser), localStorage.setItem("Name", Name), localStorage.setItem("Admin", Admin)
+          const Barber = result.data.isBarber
+          const Admin = result.data.isAdmin
+      localStorage.setItem("Token", token), localStorage.setItem("IdUser", IdUser), localStorage.setItem("Name", Name), localStorage.setItem("Admin", Admin), localStorage.setItem("Barber", Barber)
           setTimeout(() => (this.loading = false ,this.$router.push('/TelaPrincipal')), 1500)
       }
       else {     
@@ -89,7 +91,23 @@ export default {
       if (/^[_a-z0-9-.]+@[a-z.-]+\.[a-z]+$/i.test(v)) return true
       return 'Deve ser um e-mail valido.'
     },
+    async GetSession(){
+      const result = await GetSession()
+      if (result === 200){
+        console.log("Session Valid")
+        setTimeout(()=>{
+          this.$router.push('/TelaPrincipal')
+        },500)
+      }else{
+        console.log("Session Invalid");
+        this.$router.push('/')
+      }
+    }
   },
+
+  mounted(){
+    this.GetSession();
+  }
 }
 </script>
 

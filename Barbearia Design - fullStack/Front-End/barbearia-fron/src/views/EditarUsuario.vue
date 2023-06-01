@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { UpdateUser } from "@/Services/Api";
+import { GetUserId, UpdateUser } from "@/Services/Api";
 import { validate } from "gerador-validador-cpf";
 import validator from 'validator';
 import ContainerBox from '../components/ContainerBox.vue'
@@ -148,8 +148,22 @@ export default {
     PhoneRules(v) {
       if (validator.isMobilePhone(v)) return true
       return "Número de telefone inválido."
+    },
+
+    async GetUserPerId(){
+      const IdUser = localStorage.getItem("IdUser");
+      const result = await GetUserId(IdUser)
+      if (result.status === 200){
+        this.Name = result.data.userName
+        this.CPF = result.data.cpf
+        this.Email = result.data.email
+        this.Phone = result.data.phone
+      }
     }
   },
+  mounted(){
+    this.GetUserPerId();
+  }
 }
 
 

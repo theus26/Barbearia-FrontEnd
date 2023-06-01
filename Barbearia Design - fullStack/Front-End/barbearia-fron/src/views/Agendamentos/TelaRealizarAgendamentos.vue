@@ -139,7 +139,7 @@ export default {
             if (result.CodeUnauthorized === 401) {
                 this.loading = false
                 this.$swal("Error", "Sessão Expirada", "error");
-
+                localStorage.clear();
                 setTimeout(() => {
                     this.$router.push('/')
                 }, 3000)

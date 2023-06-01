@@ -1,12 +1,22 @@
 import axios from  "axios"
-const token = localStorage.getItem("Token")
-
+const token = localStorage.getItem("Token");
+console.log(token)
 export const api = axios.create({
     baseURL:"https://localhost:7189",
     headers:{
         Authorization:`Bearer ${token}`
     }
 })
+
+export const GetSession = async () =>{
+    return api.get('User/ValidateSession').then(result => {
+        return result.status
+    })
+
+    .catch(e => {
+        return {code: 401}
+    })
+}
 
 export const Login = async (Email, Password) => {
     return api.post('User/Login', {Email, Password}).then(result =>{
@@ -100,6 +110,15 @@ export const UpdateScheduling = async (IdUser, IdScheduling, HairCurtDate, Desir
 
  export const GetAllBarber = async (Name) =>{
     return api.get('User/GetBarberAppointment/' + Name).then(result =>{
+        return result
+    })
+    .catch (e =>{
+        return {code: 400, CodeUnauthorized: 401}   
+    })
+ }
+
+ export const GetUserId = async (IdUser) =>{
+    return api.get('User/GetUserId/' + IdUser).then(result =>{
         return result
     })
     .catch (e =>{
