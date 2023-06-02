@@ -18,6 +18,36 @@ export const GetSession = async () =>{
     })
 }
 
+export const GetHoraries = async () =>{
+    return api.get('User/GetAllHoraries').then(result => {
+        return result
+    })
+
+    .catch(e => {
+        return {code: 400}
+    })
+}
+
+export const GetServices = async () =>{
+    return api.get('User/GetAllServices').then(result =>{
+        return result
+    })
+
+    .catch(e =>{
+        return {code: 400}
+    })
+}
+
+export const GetShavyes = async () => {
+    return api.get('User/GetAllShavys').then( result =>{
+        return result
+    })
+
+    .catch(e =>{
+        return {code: 400}
+    })
+}
+
 export const Login = async (Email, Password) => {
     return api.post('User/Login', {Email, Password}).then(result =>{
         return result

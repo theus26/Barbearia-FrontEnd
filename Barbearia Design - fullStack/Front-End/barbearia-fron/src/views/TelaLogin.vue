@@ -97,7 +97,7 @@ export default {
         console.log("Session Valid")
         setTimeout(()=>{
           this.$router.push('/TelaPrincipal')
-        },500)
+        },)
       }else{
         console.log("Session Invalid");
         this.$router.push('/')
