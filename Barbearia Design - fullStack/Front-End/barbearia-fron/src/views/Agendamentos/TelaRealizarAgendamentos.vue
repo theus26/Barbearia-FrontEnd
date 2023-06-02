@@ -56,7 +56,10 @@
 
 
 <script>
-import { RegisterScheduling } from '@/Services/Api'
+import { RegisterScheduling } from '@/Services/Api';
+import { GetHoraries } from '@/Services/Api';
+import {GetServices} from '@/Services/Api';
+import {GetShavyes} from '@/Services/Api';
 import ContainerBoxVue from '@/components/ContainerBox.vue';
 import NavBar from '@/components/NavBar.vue';
 export default {
@@ -76,32 +79,13 @@ export default {
             barbeiroSelect: null,
             loading: null,
             itemsHorario: [
-                '08:00',
-                '09:00',
-                '10:00',
-                '11:00',
-                '12:00',
-                '14:00',
-                '15:00',
-                '16:00',
-                '17:00',
-                '18:00',
-                '19:00'
+
             ],
             itemsServiço: [
-                'Corte de Cabelo',
-                'Sombrancelha',
-                'Barba',
-                'Corte de Cabelo e Sombrancelha',
-                'Corte de Cabelo e Barba',
-                'Corte de Cabelo, Sombrancelha e Barba',
-                'Sombrancelha e Barba'
+               
             ],
             itemsBarbeiro: [
-                'Fagner',
-                'Pedro',
-                'Jõao',
-
+                
             ]
         }
     },
@@ -112,6 +96,7 @@ export default {
                 this.loading = true
             }, 2000)
             const UserId = localStorage.getItem("IdUser")
+
             if (this.barbeiroSelect == 'Fagner') {
                 this.barberEnum = 0;
             }
@@ -145,11 +130,47 @@ export default {
                 }, 3000)
 
             }
+        },
 
+        async GetAllHoraries() {
 
+            const result = await GetHoraries();
+            if (result.status === 200) {
 
+                const data = result.data;
+                const hr = data.map(data => data.horary)
+                this.itemsHorario = hr
+            }
+            else {
+                console.log("Não foi possivel")
+            }
+        },
+        
+        async GetAllServices(){
+            const result = await GetServices();
 
+            if (result.status === 200){
+                const data = result.data;
+                const service = data.map(data => data.nameServices);
+                this.itemsServiço = service;
+                
+            }else{
+                console.log("Não foi possivel")
+            }
+        },
+
+        async GetAllShavyes(){
+            const result = await GetShavyes();
+            if (result.status === 200){
+                const data = result.data;
+                const Barbers = data.map(data => data.barberName)
+                this.itemsBarbeiro = Barbers;
+            }else{
+                console.log("Não foi possivel");
+            }
         }
+
+
     },
 
     select(value) {
@@ -160,7 +181,15 @@ export default {
     required(v) {
         return !!v || "Preencha o campo "
     },
+
+    mounted() {
+        this.GetAllHoraries();
+        this.GetAllServices();
+        this.GetAllShavyes();
+    },
+
 }
+
 
 
 
