@@ -68,8 +68,7 @@
         <div class="container">
 
             <div class="info" v-show="info">
-                <v-alert type="warning" title="Você não possui nenhum agendamento..." text=""
-                    variant="tonal"></v-alert>
+                <v-alert type="warning" title="Você não possui nenhum agendamento..." text="" variant="tonal"></v-alert>
             </div>
 
 
@@ -148,6 +147,9 @@ moment.locale('pt-br');
 import { UpdateScheduling } from '@/Services/Api';
 import { DeleteScheduling } from '@/Services/Api'
 import { GetAllPerId } from '@/Services/Api';
+import { GetHoraries } from '@/Services/Api';
+import { GetServices } from '@/Services/Api';
+import { GetShavyes } from '@/Services/Api';
 import NavBar from '@/components/NavBar.vue';
 
 export default {
@@ -175,31 +177,13 @@ export default {
             barbeiroSelect: null,
             loading: null,
             itemsHorario: [
-                '08:00',
-                '09:00',
-                '10:00',
-                '11:00',
-                '12:00',
-                '14:00',
-                '15:00',
-                '16:00',
-                '17:00',
-                '18:00',
-                '19:00'
+
             ],
             itemsServiço: [
-                'Corte de Cabelo',
-                'Sombrancelha',
-                'Barba',
-                'Corte de Cabelo e Sombrancelha',
-                'Corte de Cabelo e Barba',
-                'Corte de Cabelo, Sombrancelha e Barba',
-                'Sombrancelha e Barba'
+
             ],
             itemsBarbeiro: [
-                'Fagner ',
-                'Pedro',
-                'Jõao',
+
             ]
         }
     },
@@ -281,42 +265,80 @@ export default {
         async GetallScheduling() {
             const IdUser = localStorage.getItem("IdUser");
             const result = await GetAllPerId(IdUser);
-
+            console.log(result.data[0].count)
             if (result.status === 200) {
 
-                if (result.data.count === 0) {
+                if (result.data[0].count === 0) {
                     this.info = true
                 }
-                if (result.data.count != 0) {
+                if (result.data[0].count != 0) {
                     this.info = false
-                    const arr = this.desserts = result.data.schedulings
+                    const arr = this.desserts = result.data
                     //Ordendado array pelas datas mais recentes
-                    arr.sort(function (a, b){
-                    if(a.hairCurtDate < b.hairCurtDate){
-                        return -1
-                    }
-                    else{
-                        return true
-                    }
-                })
+                    arr.sort(function (a, b) {
+                        if (a.hairCurtDate < b.hairCurtDate) {
+                            return -1
+                        }
+                        else {
+                            return true
+                        }
+                    })
                 }
             }
-            else{
-                if(result.code === 401){
-                    
+            else {
+                if (result.code === 401) {
+
                     this.$swal(
                         'Error!',
                         'Sessão Expirada!.',
                         'error'
                     )
-                    
+
                     setTimeout(() => {
                         this.$router.push('/')
-            }, 3000)
-          
-                    
+                    }, 3000)
+
+
                 }
-               
+
+            }
+        },
+
+        async GetAllHoraries() {
+
+            const result = await GetHoraries();
+            if (result.status === 200) {
+
+                const data = result.data;
+                const hr = data.map(data => data.horary)
+                this.itemsHorario = hr
+            }
+            else {
+                console.log("Não foi possivel")
+            }
+        },
+
+        async GetAllServices() {
+            const result = await GetServices();
+
+            if (result.status === 200) {
+                const data = result.data;
+                const service = data.map(data => data.nameServices);
+                this.itemsServiço = service;
+
+            } else {
+                console.log("Não foi possivel")
+            }
+        },
+
+        async GetAllShavyes() {
+            const result = await GetShavyes();
+            if (result.status === 200) {
+                const data = result.data;
+                const Barbers = data.map(data => data.barberName)
+                this.itemsBarbeiro = Barbers;
+            } else {
+                console.log("Não foi possivel");
             }
         },
 
@@ -331,6 +353,9 @@ export default {
     },
     mounted() {
         this.GetallScheduling();
+        this.GetAllHoraries();
+        this.GetAllServices();
+        this.GetAllShavyes();
     }
 
 }

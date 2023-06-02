@@ -6,6 +6,7 @@ export const api = axios.create({
     headers:{
         Authorization:`Bearer ${token}`
     }
+    
 })
 
 export const GetSession = async () =>{

@@ -150,7 +150,7 @@ export default {
         async GetAllScheduling() {
             const result = await GetAll()
             if (result.status === 200) {
-                const agen = this.desserts = result.data.schedulings
+                const agen = this.desserts = result.data
 
                 agen.sort(function (a, b) {
                     if (a.hairCurtDate < b.hairCurtDate) {
