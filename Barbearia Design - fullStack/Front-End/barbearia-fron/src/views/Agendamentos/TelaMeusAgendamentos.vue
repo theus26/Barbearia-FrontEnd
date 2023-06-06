@@ -201,22 +201,44 @@ export default {
         },
         async Cancelar(v) {
             const IdScheduling = v
-            const result = await DeleteScheduling(IdScheduling)
-            if (result === 200) {
-                this.$swal(
-                    'Concluido!',
-                    'Agendamento Cancelado com Sucesso.',
-                    'success'
-                )
-            }
-            else {
-                this.$swal(
-                    'Error!',
-                    'Erro ao Cancelar agendamento.',
-                    'error'
-                )
-            }
+            var result = await DeleteScheduling(IdScheduling)
+            this.$swal({
+                title: 'Tem Certeza?',
+                text: "Você não será capaz de reverter isso!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, Cancelar !',
+                cancelButtonText: 'Não !',
+                reverseButtons: true
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    if (result === 200) {
+                        setTimeout(() => {
+                            this.$swal(
+                                'Cancelado!',
+                                'Seu Horario foi cancelado.',
+                                'success'
+                            )
+                        }, 2000)
+
+                    }
+                    else {
+                        this.$swal(
+                            'Error!',
+                            'Erro ao Cancelar agendamento.',
+                            'error'
+                        )
+                    }
+                }
+                console.log("Executou")
+                this.GetallScheduling();
+                console.log("Executou")
+
+            })
+            console.log("Executou")
             this.GetallScheduling();
+            console.log("Executou")
+
         },
 
         async onSubmit() {
@@ -265,10 +287,11 @@ export default {
         async GetallScheduling() {
             const IdUser = localStorage.getItem("IdUser");
             const result = await GetAllPerId(IdUser);
-            console.log(result.data[0].count)
+            console.log(result.data.length)
             if (result.status === 200) {
 
-                if (result.data[0].count === 0) {
+                if ( result.data.length === 0) {
+                    console.log("Entrou")
                     this.info = true
                 }
                 if (result.data[0].count != 0) {
