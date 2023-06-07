@@ -129,7 +129,11 @@
                 </v-table>
                 <div class="container-paginatior">
                     <div class="pagination">
-                        <v-pagination v-model="page" :length="6"></v-pagination>
+                        <v-row justify="center" align="center">
+                        <v-col cols="auto">
+                            <v-btn @click="loadMore()" density="compact" >Carregar mais</v-btn>
+                        </v-col>
+                        </v-row>
                     </div>
                 </div>
             </div>
@@ -160,14 +164,15 @@ export default {
 
     data() {
         return {
-            page: 1,
             dialog: false,
             info: false,
+            isDisabled:true,
             barberEnum: null,
             concluido: [],
-            desserts: [
-
-            ],
+            desserts: [],
+            allDeserts: [],
+            page: 0,
+            pagePerDeserts: 3,
             DateFormat: null,
             form: false,
             loading: null,
@@ -192,7 +197,6 @@ export default {
             this.dialog = true
             var user = v;
             this.concluido = user
-            console.log(this.concluido)
             this.barbeiroSelect = this.concluido.barber
             this.servicoSelect = this.concluido.desiredService
             this.horarioSelect = this.concluido.time
@@ -213,14 +217,15 @@ export default {
             }).then((res) => {
                 if (res.isConfirmed) {
                     if (result === 200) {
-                        setTimeout(() => {
-                            this.$swal(
-                                'Cancelado!',
-                                'Seu Horario foi cancelado.',
-                                'success'
-                            )
-                        }, 2000)
 
+                        this.$swal(
+                            'Cancelado!',
+                            'Seu Horario foi cancelado.',
+                            'success'
+                        )
+
+
+                        this.GetallScheduling();
                     }
                     else {
                         this.$swal(
@@ -230,14 +235,7 @@ export default {
                         )
                     }
                 }
-                console.log("Executou")
-                this.GetallScheduling();
-                console.log("Executou")
-
             })
-            console.log("Executou")
-            this.GetallScheduling();
-            console.log("Executou")
 
         },
 
@@ -284,19 +282,32 @@ export default {
 
         },
 
+        loadMore(){
+            console.log("Carregar mais")
+            const nextPage = this.page + this.pagePerDeserts
+            const nextPosts = this.allDeserts.slice( nextPage, nextPage + this.pagePerDeserts);
+            this.desserts.push(...nextPosts);
+            this.page = nextPage
+            
+
+        },
+
         async GetallScheduling() {
             const IdUser = localStorage.getItem("IdUser");
             const result = await GetAllPerId(IdUser);
-            console.log(result.data.length)
+         
             if (result.status === 200) {
-
-                if ( result.data.length === 0) {
-                    console.log("Entrou")
+                
+                if (result.data.length === 0) {
+                    const arr = this.desserts = result.data
                     this.info = true
                 }
                 if (result.data[0].count != 0) {
                     this.info = false
-                    const arr = this.desserts = result.data
+                    const arr = this.desserts = result.data.slice(this.page, this.pagePerDeserts)
+                    const allArray = this.allDeserts = result.data
+                   
+                    console.log(allArray)
                     //Ordendado array pelas datas mais recentes
                     arr.sort(function (a, b) {
                         if (a.hairCurtDate < b.hairCurtDate) {

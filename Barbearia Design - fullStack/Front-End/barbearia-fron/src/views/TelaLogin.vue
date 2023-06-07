@@ -20,8 +20,9 @@
           <v-form v-model="form" @submit.prevent="onSubmit">
             <v-text-field v-model="Email" :readonly="loading" :rules="[required, Emails]" outilined class="mb-2"
               label="Digite seu Email:" placeholder="example@gmail.com"></v-text-field>
-            <v-text-field :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'" :type="show4 ? 'text' : 'password'" @click:append="show4 = !show4" v-model="Password" :readonly="loading" :rules="[required, rules.min, rules.letraNum]"
-              label="Senha" placeholder="Insira sua senha."></v-text-field>
+            <v-text-field :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'" :type="show4 ? 'text' : 'password'"
+              @click:append="show4 = !show4" v-model="Password" :readonly="loading"
+              :rules="[required, rules.min, rules.letraNum]" label="Senha" placeholder="Insira sua senha."></v-text-field>
             <br>
             <v-btn :disabled="!form" :loading="loading" block color="success" size="large" type="submit"
               variant="elevated">
@@ -42,7 +43,7 @@
 </template>
 <script>
 
-import {Login} from "../Services/Api"
+import { Login } from "../Services/Api"
 import { GetSession } from "../Services/Api"
 
 export default {
@@ -66,23 +67,22 @@ export default {
       if (!this.form) return
       this.loading = true
       const result = await Login(this.Email, this.Password)
-      if (result.status === 200){
-          console.log(result.data)
-          const token = result.data.token
-          const IdUser = result.data.idUser
-          const Name = result.data.userName
-          const Barber = result.data.isBarber
-          const Admin = result.data.isAdmin
-      localStorage.setItem("Token", token), localStorage.setItem("IdUser", IdUser), localStorage.setItem("Name", Name), localStorage.setItem("Admin", Admin), localStorage.setItem("Barber", Barber)
-          setTimeout(() => (this.loading = false ,this.$router.push('/TelaPrincipal')), 1500)
+      if (result.status === 200) {
+        const token = result.data.token
+        const IdUser = result.data.idUser
+        const Name = result.data.userName
+        const Barber = result.data.isBarber
+        const Admin = result.data.isAdmin
+        localStorage.setItem("Token", token), localStorage.setItem("IdUser", IdUser), localStorage.setItem("Name", Name), localStorage.setItem("Admin", Admin), localStorage.setItem("Barber", Barber)
+        setTimeout(() => (this.loading = false, this.$router.push('/TelaPrincipal')), 1500)
       }
-      else {     
-         if (result.code === 400) {
-           this.$swal("Error", "Email OU Senha Incorretos", "error");        
-           this.loading = false
-         }
-       }
-      
+      else {
+        if (result.code === 400) {
+          this.$swal("Error", "Email OU Senha Incorretos", "error");
+          this.loading = false
+        }
+      }
+
     },
     required(v) {
       return !!v || 'Campos não pode ser vazio, Preencha os campos.'
@@ -91,21 +91,20 @@ export default {
       if (/^[_a-z0-9-.]+@[a-z.-]+\.[a-z]+$/i.test(v)) return true
       return 'Deve ser um e-mail valido.'
     },
-    async GetSession(){
+    async GetSession() {
       const result = await GetSession()
-      if (result === 200){
-        console.log("Session Valid")
-        setTimeout(()=>{
-          this.$router.push('/TelaPrincipal')
-        },)
-      }else{
+      if (result === 200) {
+
+        this.$router.push('/TelaPrincipal')
+
+      } else {
         console.log("Session Invalid");
         this.$router.push('/')
       }
     }
   },
 
-  mounted(){
+  mounted() {
     this.GetSession();
   }
 }
@@ -189,6 +188,6 @@ export default {
     margin-bottom: 5rem;
   }
 
- 
+
 }
 </style>
