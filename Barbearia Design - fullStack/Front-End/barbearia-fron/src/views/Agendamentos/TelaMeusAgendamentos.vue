@@ -223,9 +223,6 @@ export default {
                             'Seu Horario foi cancelado.',
                             'success'
                         )
-
-
-                        this.GetallScheduling();
                     }
                     else {
                         this.$swal(
@@ -234,6 +231,7 @@ export default {
                             'error'
                         )
                     }
+                    this.GetallScheduling();
                 }
             })
 
@@ -283,7 +281,7 @@ export default {
         },
 
         loadMore(){
-            console.log("Carregar mais")
+           
             const nextPage = this.page + this.pagePerDeserts
             const nextPosts = this.allDeserts.slice( nextPage, nextPage + this.pagePerDeserts);
             this.desserts.push(...nextPosts);
@@ -307,7 +305,7 @@ export default {
                     const arr = this.desserts = result.data.slice(this.page, this.pagePerDeserts)
                     const allArray = this.allDeserts = result.data
                    
-                    console.log(allArray)
+                    
                     //Ordendado array pelas datas mais recentes
                     arr.sort(function (a, b) {
                         if (a.hairCurtDate < b.hairCurtDate) {
@@ -320,8 +318,8 @@ export default {
                 }
             }
             else {
-                if (result.code === 401) {
-
+                if (result.CodeUnauthorized === 401) {
+                    localStorage.clear();
                     this.$swal(
                         'Error!',
                         'Sessão Expirada!.',

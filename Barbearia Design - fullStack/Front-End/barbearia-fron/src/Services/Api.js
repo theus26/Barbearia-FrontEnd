@@ -1,6 +1,6 @@
 import axios from  "axios"
 const token = localStorage.getItem("Token");
-console.log(token)
+console.log(token);
 export const api = axios.create({
     baseURL:"https://localhost:7189",
     headers:{
@@ -90,7 +90,7 @@ export const GetAllPerId = async (IdUser) =>{
         return result
     })
     .catch((err) => {
-        return {code: 401} 
+        return {code: 400, CodeUnauthorized: 401}  
      });
 }
 
@@ -99,7 +99,7 @@ export const GetAll = async () =>{
         return result;
     })
     .catch(e => {
-        return {code: 401}
+        return {code: 400, CodeUnauthorized: 401}  
     })
 }
 
@@ -108,7 +108,7 @@ export const CompleteScheduling = async (IdScheduling, SchedulingCompleted) =>{
         return result.status;
     })
     .catch (e=> {
-        return {code: 400}
+        return {code: 400, CodeUnauthorized: 401}  
     })
 }
 
@@ -118,7 +118,7 @@ export const DeleteScheduling = async (IdScheduling) =>{
     })
 
     .catch(e =>{
-        return {code: 400}
+        return {code: 400, CodeUnauthorized: 401}  
     })
 }
 
@@ -127,7 +127,7 @@ export const UpdateScheduling = async (IdUser, IdScheduling, HairCurtDate, Desir
         return result.status
     })
     .catch (e => {
-        return {code:400}
+        return {code: 400, CodeUnauthorized: 401}  
     })
 }
  export const UpdateUser = async (IdUser,Name, Email, Password, CPF, Phone,) =>{

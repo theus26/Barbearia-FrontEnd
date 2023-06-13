@@ -117,11 +117,15 @@ export default {
             }
 
             if (result.code === 400) {
+                console.log("Entrou")
+                console.log(result.CodeUnauthorized, result.code)
                 this.loading = false
                 this.$swal("Error", "Não foi Possivel realizar agendamento", "error");
             }
 
             if (result.CodeUnauthorized === 401) {
+                console.log("Entrou")
+                console.log(result.CodeUnauthorized, result.code)
                 this.loading = false
                 this.$swal("Error", "Sessão Expirada", "error");
                 localStorage.clear();
