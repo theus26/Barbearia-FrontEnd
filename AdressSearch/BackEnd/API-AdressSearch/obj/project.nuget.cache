@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "G6UgbBnXuiyrv/AokkqcSqiEAGvx03QJHqUD0+FIq5nk+h1xjgzSO82vgGRDO6DNIDm4Aa3/Yqa683Mzxntyzw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\Matheus\\Full-Stack\\AdressSearch\\BackEnd\\API-AdressSearch\\API-AdressSearch.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.7\\microsoft.aspnetcore.openapi.7.0.7.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
